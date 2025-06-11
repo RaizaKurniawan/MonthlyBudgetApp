@@ -11,23 +11,21 @@ struct LoginView: View {
     @Binding var isLoggedIn: Bool
     @State private var email = ""
     @State private var password = ""
-    
+
     var body: some View {
         VStack(spacing: 20) {
             Text("Login")
                 .font(.largeTitle)
-            
             TextField("Email", text: $email)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
-            
             SecureField("Password", text: $password)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
-            
-            Button("Login"){
+            Button("Login") {
+                // Simulasi login sukses
                 isLoggedIn = true
             }
-            Button("Register"){
-                
+            Button("Register") {
+                // Navigasi ke register (bisa tambah view terpisah)
             }
         }
         .padding()

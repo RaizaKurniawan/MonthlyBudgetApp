@@ -13,8 +13,7 @@ struct Transaction: Identifiable {
     var category: String
     var amount: Double
     var date: Date
-    var type: String
-    
+    var type: String // "Income" or "Spend"
 }
 
 struct Budget: Identifiable {
@@ -28,7 +27,7 @@ struct ContentView: View {
     @State private var transactions: [Transaction] = []
     @State private var budgets: [Budget] = []
     @State private var isLoggedIn = false
-    
+
     var body: some View {
         NavigationStack {
             if isLoggedIn {
@@ -47,6 +46,7 @@ struct ContentView: View {
     }
 }
 
+// Preview
 #Preview {
     ContentView()
 }
