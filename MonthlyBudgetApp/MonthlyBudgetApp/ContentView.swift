@@ -32,7 +32,7 @@ struct ContentView: View {
         Budget(category: "Dokumen perencanaan", planned: 1000000, actual: 799999),
         Budget(category: "Other", planned: 500000, actual: 200001)
     ]
-    @State private var isLoggedIn = false
+    @State private var isLoggedIn = UserDefaults.standard.bool(forKey: "isLoggedIn")
 
     var body: some View {
         NavigationStack {

@@ -10,6 +10,12 @@ struct LoginView: View {
     @Binding var isLoggedIn: Bool
     @State private var email = ""
     @State private var password = ""
+    @State private var errorMessage = ""
+    @State private var showError = false
+
+    // Dummy credentials (for testing)
+    private let validEmail = "user@example.com"
+    private let validPassword = "password123"
 
     var body: some View {
         ZStack {
@@ -18,7 +24,6 @@ struct LoginView: View {
                 .edgesIgnoringSafeArea(.all)
 
             VStack(spacing: 30) {
-                // Placeholder for Logo (Removed as per request)
                 Spacer()
 
                 // Title and Description
@@ -32,14 +37,28 @@ struct LoginView: View {
                     .multilineTextAlignment(.center)
                     .padding(.horizontal, 40)
 
-                // Login Form (Placeholder, can be expanded)
+                // Login Form
                 VStack(spacing: 20) {
-                    TextField("Email", text: $email)
-                        .textFieldStyle(RoundedBorderTextFieldStyle())
-                        .foregroundColor(.black)
-                        .padding()
-                        .background(Color.white.opacity(0.8))
-                        .cornerRadius(10)
+                    if showError {
+                        Text(errorMessage)
+                            .foregroundColor(.red)
+                            .font(.caption)
+                            .transition(.opacity)
+                            .id(errorMessage) // Force re-render on message change
+                    }
+
+                    TextField("Email", text: Binding(
+                        get: { email },
+                        set: { email = $0.lowercased() } // Convert to lowercase
+                    ))
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                    .foregroundColor(.black)
+                    .padding()
+                    .background(Color.white.opacity(0.8))
+                    .cornerRadius(10)
+                    .keyboardType(.emailAddress)
+                    .textContentType(.emailAddress)
+                    .autocapitalization(.none) // Prevent auto-capitalization
 
                     SecureField("Password", text: $password)
                         .textFieldStyle(RoundedBorderTextFieldStyle())
@@ -47,10 +66,26 @@ struct LoginView: View {
                         .padding()
                         .background(Color.white.opacity(0.8))
                         .cornerRadius(10)
+                        .textContentType(.password)
 
                     Button(action: {
-                        // Simulasi login sukses
-                        isLoggedIn = true
+                        // Validasi login
+                        let normalizedEmail = email.lowercased()
+                        if normalizedEmail == validEmail && password == validPassword {
+                            UserDefaults.standard.set(true, forKey: "isLoggedIn")
+                            isLoggedIn = true
+                            errorMessage = ""
+                            showError = false
+                        } else {
+                            errorMessage = "Invalid email or password"
+                            showError = true
+                            // Schedule fade-out after 4 seconds
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
+                                withAnimation {
+                                    showError = false
+                                }
+                            }
+                        }
                     }) {
                         Text("Log In")
                             .fontWeight(.bold)
