@@ -4,7 +4,6 @@
 //
 //  Created by raizakurniawan on 11/06/25.
 //
-
 import SwiftUI
 
 // Model Data
@@ -24,8 +23,15 @@ struct Budget: Identifiable {
 }
 
 struct ContentView: View {
-    @State private var transactions: [Transaction] = []
-    @State private var budgets: [Budget] = []
+    @State private var transactions: [Transaction] = [
+        Transaction(category: "Dokumen perencanaan", amount: 799999, date: Date(), type: "Spend"),
+        Transaction(category: "Other", amount: 200001, date: Date().addingTimeInterval(-86400), type: "Income"),
+        Transaction(category: "Food", amount: 150000, date: Date().addingTimeInterval(-172800), type: "Spend")
+    ]
+    @State private var budgets: [Budget] = [
+        Budget(category: "Dokumen perencanaan", planned: 1000000, actual: 799999),
+        Budget(category: "Other", planned: 500000, actual: 200001)
+    ]
     @State private var isLoggedIn = false
 
     var body: some View {
